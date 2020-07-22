@@ -1,15 +1,15 @@
 //default config
-
-export default  config = {
+//默认配置
+module.exports = {
         // +----------------------------------------------------------------------
        // | 应用设置
        // +----------------------------------------------------------------------
        //app版本号
-       'app_version'                :   '1.0.0',
+       'app_version'            : '0.0.1',
        // 默认Host地址
        'app_host'               : '',
        // 应用调试模式
-       'app_debug'              : false,
+       'app_debug'              : true,
        // 应用Trace
        'app_trace'              : false,
        // 应用模式状态
@@ -38,10 +38,6 @@ export default  config = {
        'default_filter'         : '',
        // 默认语言
        'default_lang'           : 'zh-cn',
-       // 应用类库后缀
-       'class_suffix'           : false,
-       // 控制器类后缀
-       'controller_suffix'      : false,
    
        // +----------------------------------------------------------------------
        // | 模块设置
