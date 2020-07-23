@@ -35,7 +35,8 @@ console.log(1111);
 console.log(Object.getOwnPropertyNames(Object.getPrototypeOf(cc)));
 // 定义子路由
 const router_children = new router()
-router_children.get('/:controller/:action', function (ctx, next) {
+router_children.all(['/:controller/:action'],function (ctx, next) {
+    console.log(ctx.params);
     if(common.checkStrName(ctx.params.controller) && common.checkStrName(ctx.params.action)){
         var contorllerName = ctx.params.controller; 
         var actionName = ctx.params.action;
