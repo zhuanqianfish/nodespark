@@ -2,9 +2,11 @@
 
 install
 
-````
 knex
 koa2
 koa-router
-koa-session+
-````
+koa-session
+
+koa-static
+
+koa-bodyparser~~~~

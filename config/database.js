@@ -1,4 +1,4 @@
-//数据库配置
+//全局数据库配置
 module.exports = {
     type:   'mysql',
     host: '127.0.0.1',

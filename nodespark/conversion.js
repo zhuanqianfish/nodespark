@@ -1,5 +1,13 @@
 //default config
 //默认配置
+
+const path = require('path'); 
+let SPARK_PATH = __dirname; 
+let DS = path.sep;  //分隔符
+let EXT = '.js';    //扩展函数后缀
+
+let CACHE_PATH = '';
+
 module.exports = {
         // +----------------------------------------------------------------------
        // | 应用设置
@@ -12,14 +20,10 @@ module.exports = {
        'app_debug'              : true,
        // 应用Trace
        'app_trace'              : false,
-       // 应用模式状态
-       'app_status'             : '',
        // 是否支持多模块
        'app_multi_module'       : true,
        // 入口自动绑定模块
        'auto_bind_module'       : false,
-       // 注册的根命名空间
-       'root_namespace'         : {},
        // 扩展函数文件
        'extra_file_list'        : [SPARK_PATH + 'helper' + EXT],
        // 默认输出类型
@@ -66,23 +70,6 @@ module.exports = {
        // | URL设置
        // +----------------------------------------------------------------------
    
-       // PATHINFO变量名 用于兼容模式
-       'var_pathinfo'           : 's',
-       // 兼容PATH_INFO获取
-       'pathinfo_fetch'         : ['ORIG_PATH_INFO', 'REDIRECT_PATH_INFO', 'REDIRECT_URL'],
-       // pathinfo分隔符
-       'pathinfo_depr'          : '/',
-       // HTTPS代理标识
-       'https_agent_name'       : '',
-       // URL伪静态后缀
-       'url_html_suffix'        : 'html',
-       // URL普通方式参数 用于自动生成
-       'url_common_param'       : false,
-       // URL参数方式 0 按名称成对解析 1 按顺序解析
-       'url_param_type'         : 0,
-       // 是否开启路由
-       'url_route_on'           : true,
-       // 路由配置文件（支持配置多个）
        'route_config_file'      : ['route'],
        // 路由使用完整匹配
        'route_complete_match'   : false,
@@ -116,8 +103,8 @@ module.exports = {
        'template'               : {
            // 默认模板渲染规则 1 解析为小写+下划线 2 全部转换小写
            'auto_rule'    : 1,
-           // 模板引擎类型 支持 php Spark 支持扩展
-           'type'         : 'Spark',
+           // 模板引擎类型 支持art-template
+           'type'         : 'art-template',
            // 视图基础目录，配置目录为所有模块的视图起始目录
            'view_base'    : '',
            // 当前模板的视图目录 留空为自动获取
@@ -139,15 +126,15 @@ module.exports = {
        // 视图输出字符串内容替换
        'view_replace_str'       : {},
        // 默认跳转页面对应的模板文件
-       'dispatch_success_tmpl'  : Spark_PATH + 'tpl' + DS + 'dispatch_jump.tpl',
-       'dispatch_error_tmpl'    : Spark_PATH + 'tpl' + DS + 'dispatch_jump.tpl',
+       'dispatch_success_tmpl'  : SPARK_PATH + 'tpl' + DS + 'dispatch_jump.tpl',
+       'dispatch_error_tmpl'    : SPARK_PATH + 'tpl' + DS + 'dispatch_jump.tpl',
    
        // +----------------------------------------------------------------------
        // | 异常及错误设置
        // +----------------------------------------------------------------------
    
        // 异常页面的模板文件
-       'exception_tmpl'         : Spark_PATH + 'tpl' + DS + 'Spark_exception.tpl',
+       'exception_tmpl'         : SPARK_PATH + 'tpl' + DS + 'spark_exception.tpl',
    
        // 错误显示信息,非调试模式有效
        'error_message'          : '页面错误！请稍后再试～',
@@ -166,7 +153,7 @@ module.exports = {
            // 日志记录方式，内置 file socket 支持扩展
            'type'  : 'File',
            // 日志保存目录
-           'path'  : LOG_PATH,
+           'path'  : SPARK_PATH,
            // 日志记录级别
            'level' : {},
        },
@@ -235,7 +222,6 @@ module.exports = {
        // +----------------------------------------------------------------------
        // | 数据库设置
        // +----------------------------------------------------------------------
-   
        'database'               : {
            // 数据库类型
            'type'            : 'mysql',
