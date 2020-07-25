@@ -13,11 +13,13 @@ module.exports = {
        // | 应用设置
        // +----------------------------------------------------------------------
        //app版本号
-       'app_version'            : '0.0.1',
+       'app_version'            :   '0.0.1',
        // 默认Host地址
-       'app_host'               : '',
+       'app_host'               :   '',
        // 应用调试模式
-       'app_debug'              : true,
+       'app_debug'              :   false,
+       //app文件夹名称
+       'app_dir'                :   'application',
        // 应用Trace
        'app_trace'              : false,
        // 是否支持多模块

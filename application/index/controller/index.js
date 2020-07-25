@@ -3,23 +3,28 @@ let SpartController = require('../../../nodespark/library/controller.js');
 
 
 let Index = class Index extends SpartController{
+    aaa = 'aaa';
+    bbb = 'bbb';
+
     constructor(){
         super();
-        console.log('run in Index/constructor');
     }
 
     index(){
-        console.log(this.ctx);
         console.log('in Index/index');
-        return 'in Index/index';
+        //console.log(this.request);
+        let req_query = this.request.query;
+        let req_queryString = this.request.queryString;
+        console.log(req_query);
+        console.log(req_query.a);
+
+        return this.view();
     }
 
-
-    aaa = 'aaa';
-    bbb = 'bbb';
-    ccc(par1, par2, par3 = 1){
+    ccc(par3 = 1){
         console.log(par3);
+        return 'in Index/ccc';
     }
 }
 
-module.exports = Index;
+module.exports = new Index();

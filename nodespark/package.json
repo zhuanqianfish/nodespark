@@ -12,8 +12,10 @@
   "author": "zhuanqianfish",
   "license": "ISC",
   "dependencies": {
+    "art-template": "^4.13.2",
     "knex": "^0.21.2",
     "koa": "^2.13.0",
+    "koa-art-template": "^1.1.1",
     "koa-bodyparser": "^4.3.0",
     "koa-router": "^9.1.0",
     "koa-session": "^6.0.0",

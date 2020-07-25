@@ -1,24 +1,30 @@
 var fs = require('fs');
 var path = require('path');
-
+//////没有用到！！！
 var load = function(path, name) {
     if (name) {
-        return require(path + name);
+        tempObj = require(path + name);
+        //tempObj.className =  name;
+        return tempObj;
     }
     return require(path)
 };
 
-module.exports = function (dir) {
-    patcher = {}
 
-    fs.readdirSync(__dirname + '/' + dir).forEach(function (filename) {
+module.exports = function (dir) {
+    if(!fs.existsSync(dir)){
+        return false;
+    }
+    patcher = {}
+    fs.readdirSync(dir).forEach(function (filename) {
         if (!/\.js$/.test(filename)) {
             return;
         }
         var name = path.basename(filename, '.js');
-        var _load = load.bind(null, './' + dir + '/', name);
-
+        var _load = load.bind(null, dir + '/', name);
         patcher.__defineGetter__(name, _load);
     });
     return patcher;
 };
+
+
