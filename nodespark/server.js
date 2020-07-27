@@ -2,40 +2,21 @@ const Koa = require('koa');
 const app = new Koa();
 const router = require('koa-router');
 const fs = require('fs');
-const render = require('koa-art-template');
+//const path = require('path');
+//const render = require('koa-art-template');
 
 //定义环境
-const SPARK_PATH = __dirname + '/';
-//const APP_PATH = __dirname + '/../';
-//const APP_PATH = 'D:/MyProject/nodespark/';
+
 const LIB_DIR = 'library';
 const LANG_DIR = 'lang';
-
+const SPARK_PATH = __dirname + '/';
+const LIB_PATH = SPARK_PATH + LIB_DIR + '/';
 
 //加载配置 
 var conversion = require('./conversion.js');    //默认配置
 var config = '';    //
 var common = require('./' + LIB_DIR + '/common.js');
 
-//自动加载
-//var autoLoader= require('./' + LIB_DIR + '/autoLoader.js');
-//加载路由
-//var conversion = require('./conversion.js');
-//var common = require('./router.js');
-
-// var appModules = {};        //模块      ??
-// var appControllers = {};    //控制器
-// var appModels = {};         //模型
-
-//console.log(conversion);
-/*
- //模板渲染引擎
-    render(app, {
-        root: config.appPath,
-        extname: '.html',
-        debug: process.env.NODE_ENV !== 'production'
-    });
-*/
 //app初始化
 app.use(async (ctx, next) => {
     console.log('========1111111111======');
@@ -50,32 +31,27 @@ app.use(async (ctx, next) => {
     // 定义子路由-自动路由
     const router_children = new router()
     router_children.get('/:module/:controller/:action', function (ctx, next) {
-        let moduleName = ctx.params.module;
-        let controllerName = ctx.params.controller;
-        let actionName = ctx.params.action;
+        ctx.moduleName = ctx.params.module;
+        ctx.controllerName = ctx.params.controller;
+        ctx.actionName = ctx.params.action;
+        
         //安全检查
-        if(!(common.checkStrName(moduleName) && common.checkStrName(controllerName) && common.checkStrName(actionName)) ){
+        if(!(common.checkStrName(ctx.params.module) && common.checkStrName(ctx.params.controller) && common.checkStrName(ctx.params.action)) ){
              ctx.body = 'illegal input!'; return;
         }
         //加载并实例化控制器
-        let AppController = require(config.appPath + config.app_dir + '/' + moduleName + '/controller/' + controllerName + '.js');
+        let AppController = require(config.appPath + config.app_dir + '/' + ctx.moduleName + '/controller/' + ctx.controllerName + '.js');
         
         //修改上下文以适应框架控制器
-        ctx.moduleName = moduleName;
-        ctx.controllerName = controllerName;
-        ctx.actionName = actionName;
+        ctx.config = config;
         
-        //配置模板渲染引擎
-        render(app, {
-            root: config.appPath + config.app_dir + '/' + moduleName + '/view/' + controllerName,
-            extname: '.html',
-            debug: process.env.NODE_ENV !== 'production'
-        });
+        let templateEngine = require(LIB_PATH + 'template.js');
 
         AppController.__ctx = ctx;  //导入上下文
+        AppController.__ctx.viewData = {};
+        AppController.__ctx.templateEngine = templateEngine;    //导入模板引擎
         AppController.__init();     //执行初始化赋值
-        console.log(actionName);
-        ctx.body =  eval('AppController.' +  actionName + "()");
+        ctx.body =  eval('AppController.' +   ctx.actionName + "()");
     })
 
     // 根路由
