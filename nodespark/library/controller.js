@@ -13,12 +13,13 @@ let  SparkController = class SparkController{
         this.request = this.__ctx.request;
         this.query = this.__ctx.request.query;
         this.queryString = this.__ctx.request.queryString;
+        this.db = this.__ctx.db;
     }
 
     //注册模板数据
     assign(varname, vardata){
-        console.log(this.__ctx.viewData);
         this.__ctx.viewData[varname] = vardata;
+        //console.log(this.__ctx.viewData);
     }
 
     //渲染方法
@@ -31,7 +32,6 @@ let  SparkController = class SparkController{
                          + this.__ctx.actionName + '.' + this.__ctx.config.template.view_suffix;
         }
         var templateStr = helper.getFileContents(templateFile);
-        console.log(templateFile);
 
         //处理模板数据
         if(viewData == null){
@@ -40,13 +40,9 @@ let  SparkController = class SparkController{
         return this.__ctx.templateEngine.render(templateStr, viewData);
     }
 
-
-    //数据库访问器
-    db(dbConfig = null){
-        if(dbConfig == null){
-
-        }
-    }
+    // db(){
+    //     return this.__ctx.db;
+    // }
 }
 
 module.exports = SparkController;

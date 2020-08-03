@@ -2,7 +2,15 @@ const Koa = require('koa');
 const app = new Koa();
 const router = require('koa-router');
 const fs = require('fs');
-//const path = require('path');
+const knex = require('knex')({
+    client: 'mysql',
+    connection: {
+      host : '127.0.0.1',
+      user : 'root',
+      password : 'root',
+      database : 'litesite'
+    }
+});
 //const render = require('koa-art-template');
 
 //定义环境
@@ -17,6 +25,17 @@ var conversion = require('./conversion.js');    //默认配置
 var config = '';    //
 var common = require('./' + LIB_DIR + '/common.js');
 
+//数据库引擎初始化
+// knex({
+//     client: 'mysql',
+//     connection: {
+//       host : '127.0.0.1',
+//       user : 'root',
+//       password : 'root',
+//       database : 'litesite'
+//     }
+// });
+
 //app初始化
 app.use(async (ctx, next) => {
     console.log('========1111111111======');
@@ -30,7 +49,7 @@ app.use(async (ctx, next) => {
 app.use(async (ctx, next) => {
     // 定义子路由-自动路由
     const router_children = new router()
-    router_children.get('/:module/:controller/:action', function (ctx, next) {
+     router_children.all('/:module/:controller/:action', function (ctx, next) {
         ctx.moduleName = ctx.params.module;
         ctx.controllerName = ctx.params.controller;
         ctx.actionName = ctx.params.action;
@@ -50,8 +69,9 @@ app.use(async (ctx, next) => {
         AppController.__ctx = ctx;  //导入上下文
         AppController.__ctx.viewData = {};
         AppController.__ctx.templateEngine = templateEngine;    //导入模板引擎
+        AppController.__ctx.db = knex;    //导入数据库引擎
         AppController.__init();     //执行初始化赋值
-        ctx.body =  eval('AppController.' +   ctx.actionName + "()");
+         ctx.body =  eval('AppController.' +   ctx.actionName + "()");
     })
 
     // 根路由

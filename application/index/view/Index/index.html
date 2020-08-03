@@ -7,6 +7,15 @@
 </head>
 <body>
     <h1>Node Spark</h1>
-    {{aaa}}
+    <p>单一变量a：{{aaa}}</p>  
+    <p>单一变量b：{{bbb}}</p>  
+    
+    {{@ itemList}}
+    <p>循环：</p>
+    <ul>
+        {{each itemList item index}}
+        <li>{{index}} . {{item.id}} >> {{item.username}}</li>
+        {{/each}}
+    </ul>
 </body>
 </html>
